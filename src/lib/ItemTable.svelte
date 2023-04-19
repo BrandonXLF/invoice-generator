@@ -1,5 +1,5 @@
 <script lang="ts">
-  	import type ItemTableSection from "./ItemTableSection";
+	import type ItemTableSection from './ItemTableSection';
 
 	export let itemTable: ItemTableSection;
 
@@ -8,15 +8,14 @@
 		const hasValues = !!itemTable.items[i].desc;
 
 		if (lastRow && hasValues) {
-			itemTable = itemTable.addItem()
-			return
+			itemTable = itemTable.addItem();
+			return;
 		}
 
-		else if (!lastRow && !hasValues)
-			itemTable = itemTable.removeItem(i)
+		if (!lastRow && !hasValues) itemTable = itemTable.removeItem(i);
 	}
 
-	itemTable.addItem()
+	itemTable.addItem();
 </script>
 
 <div class="row grid" style="grid-template-columns: 3fr 1fr 1fr 1fr;">
@@ -25,13 +24,17 @@
 	<div class="header">Rate</div>
 	<div class="header">Amount</div>
 	{#each itemTable.items as item, i}
-		<hr>
-		<textarea rows="2" bind:value={item.desc} on:input={() => onDescChange(i)}></textarea>
-		<input type="number" bind:value={item.quantity}>
-		<input type="number" bind:value={item.rate}>
+		<hr />
+		<textarea
+			rows="2"
+			bind:value={item.desc}
+			on:input={() => onDescChange(i)}
+		/>
+		<input type="number" bind:value={item.quantity} />
+		<input type="number" bind:value={item.rate} />
 		<output>{item.amount.toFixed(2)}</output>
 	{/each}
-	<hr>
+	<hr />
 </div>
 
 <style>

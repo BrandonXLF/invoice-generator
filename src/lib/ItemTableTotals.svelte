@@ -1,22 +1,28 @@
 <script lang="ts">
-	import type ItemTableSection from "./ItemTableSection";
+	import type ItemTableSection from './ItemTableSection';
 
 	export let itemTable: ItemTableSection;
 </script>
 
 <div class="row grid" style="grid-template-columns: 3fr 1fr 1fr 1fr;">
-	<div></div>
-	<div></div>
+	<div />
+	<div />
 	<div>Sub-Total</div>
 	<output>{itemTable.subTotal.toFixed(2)}</output>
-	<hr>
-	<div></div>
-	<div></div>
-	<div>Tax (<input type="number" class="tax-input" bind:value={itemTable.taxRate}>%)</div>
+	<hr />
+	<div />
+	<div />
+	<div>
+		Tax (<input
+			type="number"
+			class="tax-input"
+			bind:value={itemTable.taxRate}
+		/>%)
+	</div>
 	<output>{itemTable.tax.toFixed(2)}</output>
-	<hr>
-	<div></div>
-	<div></div>
+	<hr />
+	<div />
+	<div />
 	<div class="title">Total</div>
 	<output class="title">{itemTable.total.toFixed(2)}</output>
 </div>

@@ -9,15 +9,15 @@
 	import InvoiceInfoSection from './InvoiceInfoSection';
 	import ItemTableSection from './ItemTableSection';
 	import NoteSection from './NoteSection';
-  	import PDFWriter from './PDFWriter';
-  	import InvoiceTitleSection from './InvoiceTitleSection';
+	import PDFWriter from './PDFWriter';
+	import InvoiceTitleSection from './InvoiceTitleSection';
 
-	let invoiceTitle = new InvoiceTitleSection;
+	let invoiceTitle = new InvoiceTitleSection();
 	let fromAddress = new AddressSection('From');
 	let billAddress = new AddressSection('Bill To');
-	let invoiceInfo = new InvoiceInfoSection;
-	let items = new ItemTableSection;
-	let noteData = new NoteSection;
+	let invoiceInfo = new InvoiceInfoSection();
+	let items = new ItemTableSection();
+	let noteData = new NoteSection();
 	let pageSize = 'letter';
 
 	function generatePdf() {
