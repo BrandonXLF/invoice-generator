@@ -63,11 +63,11 @@
 
 <style>
 	#page {
-		max-width: min(100%, 8.5in);
-		max-height: 100%;
+		width: 100%;
+		max-width: 8.5in;
+		min-height: min(100%, 11in);
 		background: white;
 		color: black;
-		aspect-ratio: 8.5 / 11;
 		padding: 1in;
 		overflow: auto;
 	}
@@ -112,10 +112,9 @@
 		resize: vertical;
 	}
 
-	@media (max-width: 800px), (max-height: 1000px) {
+	@media (max-width: 800px), (max-height: 800px) {
 		#page {
 			padding: 0.25in;
-			aspect-ratio: unset;
 		}
 	}
 </style>
