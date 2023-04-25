@@ -75,7 +75,7 @@
 	.button-row {
 		display: flex;
 		align-items: center;
-		gap: 0.5em;
+		gap: 1em;
 	}
 
 	:global(#page .title) {
@@ -107,6 +107,10 @@
 		min-width: 20px;
 		border: none;
 		padding: 2px;
+		margin: 0;
+	}
+
+	:global(#page button) {
 		margin: 0;
 	}
 
