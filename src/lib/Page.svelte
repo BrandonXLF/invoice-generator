@@ -13,7 +13,7 @@
 	import InvoiceTitleSection from './InvoiceTitleSection';
 
 	let invoiceTitle = new InvoiceTitleSection();
-	let fromAddress = new AddressSection('From');
+	let fromAddress = new AddressSection('From', true);
 	let billAddress = new AddressSection('Bill To');
 	let invoiceInfo = new InvoiceInfoSection();
 	let items = new ItemTableSection();

@@ -17,6 +17,7 @@
 			type="number"
 			class="tax-input"
 			bind:value={itemTable.taxRate}
+			on:input={itemTable.taxRateChanged.bind(itemTable)}
 		/>%)
 	</div>
 	<output>{itemTable.tax.toFixed(2)}</output>
