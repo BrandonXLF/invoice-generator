@@ -1,5 +1,6 @@
 import type jsPDF from 'jspdf';
 import type PDFSection from './PDFSection';
+import PDFWriter from './PDFWriter';
 
 export default class InvoiceInfoSection implements PDFSection {
 	number = 'INV-001';
@@ -19,10 +20,13 @@ export default class InvoiceInfoSection implements PDFSection {
 			if (!this[key]) return;
 
 			doc
-				.text(InvoiceInfoSection.labels[key], x, y + height, {
-					baseline: 'top'
-				})
-				.text(this[key], x + 30, y + height, { baseline: 'top' });
+				.text(
+					InvoiceInfoSection.labels[key],
+					x,
+					y + height,
+					PDFWriter.TEXT_OPTS
+				)
+				.text(this[key], x + 30, y + height, PDFWriter.TEXT_OPTS);
 
 			height += 8;
 		});

@@ -1,5 +1,6 @@
 import type jsPDF from 'jspdf';
 import type PDFSection from './PDFSection';
+import PDFWriter from './PDFWriter';
 
 export default class NoteSection implements PDFSection {
 	note: string = '';
@@ -9,9 +10,9 @@ export default class NoteSection implements PDFSection {
 
 		doc
 			.setFont(undefined, 'bold')
-			.text('Notes', x, y, { baseline: 'top' })
+			.text('Notes', x, y, PDFWriter.TEXT_OPTS)
 			.setFont(undefined, 'normal')
-			.text(this.note, x, y + 10, { baseline: 'top' });
+			.text(this.note, x, y + 10, PDFWriter.TEXT_OPTS);
 
 		return 0;
 	}

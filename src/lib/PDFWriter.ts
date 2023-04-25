@@ -3,6 +3,7 @@ import type PDFSection from './PDFSection';
 
 export default class PDFWriter {
 	static MARGIN = 25.4;
+	static TEXT_OPTS = { baseline: 'top' } as const;
 
 	currentY = PDFWriter.MARGIN;
 	rowMax = 0;

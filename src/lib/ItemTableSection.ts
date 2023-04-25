@@ -60,10 +60,10 @@ export default class ItemTableSection implements PDFSection {
 	private addHeaderTo(doc: jsPDF, cols: number[], y: number) {
 		doc
 			.setFont(undefined, 'bold')
-			.text('Description', cols[0], y + 3, { baseline: 'top' })
-			.text('Quantity', cols[1], y + 3, { baseline: 'top' })
-			.text('Rate', cols[2], y + 3, { baseline: 'top' })
-			.text('Amount', cols[3], y + 3, { baseline: 'top' })
+			.text('Description', cols[0], y + 3, PDFWriter.TEXT_OPTS)
+			.text('Quantity', cols[1], y + 3, PDFWriter.TEXT_OPTS)
+			.text('Rate', cols[2], y + 3, PDFWriter.TEXT_OPTS)
+			.text('Amount', cols[3], y + 3, PDFWriter.TEXT_OPTS)
 			.setFont(undefined, 'normal');
 
 		return 10;
@@ -73,10 +73,10 @@ export default class ItemTableSection implements PDFSection {
 		this.addLineTo(doc, cols[0], y);
 
 		doc
-			.text(item.desc, cols[0], y + 3, { baseline: 'top' })
-			.text(item.quantity.toString(), cols[1], y + 3, { baseline: 'top' })
-			.text(item.rate.toFixed(2), cols[2], y + 3, { baseline: 'top' })
-			.text(item.amount.toFixed(2), cols[3], y + 3, { baseline: 'top' });
+			.text(item.desc, cols[0], y + 3, PDFWriter.TEXT_OPTS)
+			.text(item.quantity.toString(), cols[1], y + 3, PDFWriter.TEXT_OPTS)
+			.text(item.rate.toFixed(2), cols[2], y + 3, PDFWriter.TEXT_OPTS)
+			.text(item.amount.toFixed(2), cols[3], y + 3, PDFWriter.TEXT_OPTS);
 
 		const lineHeight =
 			doc.getFontSize() * doc.getLineHeightFactor() * (25.4 / 72);
@@ -94,17 +94,17 @@ export default class ItemTableSection implements PDFSection {
 			this.addLineTo(doc, cols[2], y + 20);
 
 			doc
-				.text('Sub-Total', cols[2], y + 3, { baseline: 'top' })
-				.text(this.subTotal.toFixed(2), cols[3], y + 3, { baseline: 'top' })
-				.text(`Tax (${this.taxRate}%)`, cols[2], y + 13, { baseline: 'top' })
-				.text(this.tax.toFixed(2), cols[3], y + 13, { baseline: 'top' });
+				.text('Sub-Total', cols[2], y + 3, PDFWriter.TEXT_OPTS)
+				.text(this.subTotal.toFixed(2), cols[3], y + 3, PDFWriter.TEXT_OPTS)
+				.text(`Tax (${this.taxRate}%)`, cols[2], y + 13, PDFWriter.TEXT_OPTS)
+				.text(this.tax.toFixed(2), cols[3], y + 13, PDFWriter.TEXT_OPTS);
 		}
 
 		doc
 			.setFont(undefined, 'bold')
 			.setFontSize(16)
-			.text('Total', cols[2], y + 3 + height, { baseline: 'top' })
-			.text(this.total.toFixed(2), cols[3], y + 3 + height, { baseline: 'top' })
+			.text('Total', cols[2], y + 3 + height, PDFWriter.TEXT_OPTS)
+			.text(this.total.toFixed(2), cols[3], y + 3 + height, PDFWriter.TEXT_OPTS)
 			.setFont(undefined, 'normal')
 			.setFontSize(12);
 
