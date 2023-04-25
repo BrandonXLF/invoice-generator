@@ -3,10 +3,11 @@ import type PDFSection from './PDFSection';
 import PDFWriter from './PDFWriter';
 
 export default class AddressSection implements PDFSection {
-	static ORDER = ['name', 'street', 'city'] as const;
+	static ORDER = ['name', 'street', 'street2', 'city'] as const;
 
 	name: string;
 	street: string;
+	street2: string;
 	city: string;
 	storageKey?: string;
 
@@ -15,22 +16,15 @@ export default class AddressSection implements PDFSection {
 			? this.title.toLowerCase().replace(/ /g, '-')
 			: null;
 
-		this.name = this.readValue('name');
-		this.street = this.readValue('street');
-		this.city = this.readValue('city');
+		AddressSection.ORDER.forEach((key) => {
+			if (!this.storageKey) this[key] = '';
+			this[key] = localStorage.getItem(`invoice-${this.storageKey}-${key}`);
+		});
 	}
 
 	onChange(key: (typeof AddressSection.ORDER)[number]): void {
 		if (this.storageKey)
 			localStorage.setItem(`invoice-${this.storageKey}-${key}`, this[key]);
-	}
-
-	readValue(key: string): string {
-		return (
-			(this.storageKey &&
-				localStorage.getItem(`invoice-${this.storageKey}-${key}`)) ||
-			''
-		);
 	}
 
 	addTo(doc: jsPDF, x: number, y: number) {

@@ -12,9 +12,14 @@
 		on:input={(e) => address.onChange('name')}
 	/>
 	<input
-		placeholder="Street Address"
+		placeholder="Address"
 		bind:value={address.street}
 		on:input={(e) => address.onChange('street')}
+	/>
+	<input
+		placeholder="Address 2"
+		bind:value={address.street2}
+		on:input={(e) => address.onChange('street2')}
 	/>
 	<input
 		placeholder="City"
