@@ -2,9 +2,9 @@ import type jsPDF from 'jspdf';
 import type PDFSection from './PDFSection';
 
 export default class InvoiceInfoSection implements PDFSection {
-	number: string = '';
-	date: string = '';
-	due: string = '';
+	number = 'INV-001';
+	date = new Date().toISOString().split('T')[0];
+	due = '';
 
 	static labels = {
 		number: 'Invoice #',
