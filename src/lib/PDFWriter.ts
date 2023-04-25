@@ -44,7 +44,7 @@ export default class PDFWriter {
 	 * @returns `this` for chaining methods
 	 */
 	finishRow(): PDFWriter {
-		this.currentY += this.rowMax + PDFWriter.MARGIN / 2;
+		if (this.rowMax > 0) this.currentY += this.rowMax + PDFWriter.MARGIN / 2;
 		this.rowMax = 0;
 
 		return this;

@@ -5,6 +5,8 @@ export default class NoteSection implements PDFSection {
 	note: string = '';
 
 	addTo(doc: jsPDF, x: number, y: number) {
+		if (!this.note) return 0;
+
 		doc
 			.setFont(undefined, 'bold')
 			.text('Notes', x, y, { baseline: 'top' })

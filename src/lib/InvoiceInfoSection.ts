@@ -6,15 +6,27 @@ export default class InvoiceInfoSection implements PDFSection {
 	date: string = '';
 	due: string = '';
 
-	addTo(doc: jsPDF, x: number, y: number) {
-		doc
-			.text('Invoice #', x, y, { baseline: 'top' })
-			.text('Invoice Date', x, y + 8, { baseline: 'top' })
-			.text('Due Date', x, y + 16, { baseline: 'top' })
-			.text(this.number, x + 30, y, { baseline: 'top' })
-			.text(this.date, x + 30, y + 8, { baseline: 'top' })
-			.text(this.due, x + 30, y + 16, { baseline: 'top' });
+	static labels = {
+		number: 'Invoice #',
+		date: 'Invoice Date',
+		due: 'Due Date'
+	};
 
-		return 24;
+	addTo(doc: jsPDF, x: number, y: number) {
+		let height = 0;
+
+		(['number', 'date', 'due'] as const).forEach((key) => {
+			if (!this[key]) return;
+
+			doc
+				.text(InvoiceInfoSection.labels[key], x, y + height, {
+					baseline: 'top'
+				})
+				.text(this[key], x + 30, y + height, { baseline: 'top' });
+
+			height += 8;
+		});
+
+		return height;
 	}
 }

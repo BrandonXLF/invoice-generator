@@ -9,14 +9,23 @@ export default class AddressSection implements PDFSection {
 	constructor(public title: string) {}
 
 	addTo(doc: jsPDF, x: number, y: number) {
-		doc
-			.setFont(undefined, 'bold')
-			.text(this.title, x, y, { baseline: 'top' })
-			.setFont(undefined, 'normal')
-			.text(this.name, x, y + 8, { baseline: 'top' })
-			.text(this.street, x, y + 16, { baseline: 'top' })
-			.text(this.city, x, y + 24, { baseline: 'top' });
+		let height = 0;
+		const entries = [this.name, this.street, this.city].filter((str) => str);
 
-		return 32;
+		if (entries.length) {
+			doc
+				.setFont(undefined, 'bold')
+				.text(this.title, x, y, { baseline: 'top' })
+				.setFont(undefined, 'normal');
+
+			height += 8;
+		}
+
+		entries.forEach((str) => {
+			doc.text(str, x, y + height, { baseline: 'top' });
+			height += 8;
+		});
+
+		return height;
 	}
 }
