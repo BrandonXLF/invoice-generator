@@ -20,8 +20,8 @@
 	let noteData = new NoteSection();
 	let pageSize = 'letter';
 
-	function generatePdf() {
-		new PDFWriter(pageSize)
+	function createPDF() {
+		return new PDFWriter(pageSize)
 			.addItem(fromAddress)
 			.addItem(invoiceTitle, 0, true)
 			.finishRow()
@@ -31,8 +31,7 @@
 			.addItem(items)
 			.finishRow()
 			.addItem(noteData)
-			.finishRow()
-			.save();
+			.finishRow();
 	}
 </script>
 
@@ -57,7 +56,8 @@
 				<option value="legal">Legal</option>
 			</select>
 		</label>
-		<button on:click={generatePdf}>Generate PDF</button>
+		<button on:click={() => createPDF().open()}>View PDF</button>
+		<button on:click={() => createPDF().save()}>Save PDF</button>
 	</div>
 </main>
 

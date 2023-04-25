@@ -56,4 +56,11 @@ export default class PDFWriter {
 	save(): void {
 		this.doc.save('invoice.pdf');
 	}
+
+	/**
+	 * Open the PDF document in a new browser tab
+	 */
+	open(): void {
+		window.open(this.doc.output('bloburi'));
+	}
 }
