@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+deploy.*
+.ht*
 
 # Editor directories and files
 .vscode/*

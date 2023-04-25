@@ -75,7 +75,7 @@
 	.button-row {
 		display: flex;
 		align-items: center;
-		gap: 1em;
+		gap: 0.5em;
 	}
 
 	:global(#page .title) {
@@ -100,12 +100,14 @@
 		gap: 8px;
 	}
 
-	:global(#page input, #page textarea) {
+	:global(#page input, #page textarea, #page select) {
 		color-scheme: light;
+		color: black;
 		background: #eee;
 		min-width: 20px;
 		border: none;
 		padding: 2px;
+		margin: 0;
 	}
 
 	:global(#page textarea) {
