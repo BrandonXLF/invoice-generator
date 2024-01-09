@@ -69,7 +69,6 @@
 		background: white;
 		color: black;
 		padding: 1in;
-		overflow: auto;
 	}
 
 	.button-row {
