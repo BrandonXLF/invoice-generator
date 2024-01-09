@@ -58,7 +58,7 @@ export default class ItemTableSection implements PDFSection {
 	}
 
 	private addHeaderTo(writer: PDFWriter, cols: number[]) {
-		writer.doc.setFont(undefined, 'bold');
+		writer.doc.setFont(undefined as unknown as string, 'bold');
 
 		writer
 			.addText('Description', cols[0], PDFWriter.TEXT_OPTS, false)
@@ -67,7 +67,7 @@ export default class ItemTableSection implements PDFSection {
 			.addText('Amount', cols[3], PDFWriter.TEXT_OPTS)
 			.moveY(3);
 
-		writer.doc.setFont(undefined, 'normal');
+		writer.doc.setFont(undefined as unknown as string, 'normal');
 	}
 
 	private addItemTo(writer: PDFWriter, item: Item, cols: number[]) {
@@ -111,13 +111,13 @@ export default class ItemTableSection implements PDFSection {
 				);
 		}
 
-		writer.doc.setFont(undefined, 'bold').setFontSize(16);
+		writer.doc.setFont(undefined as unknown as string, 'bold').setFontSize(16);
 
 		writer
 			.moveY(3)
 			.addText('Total', cols[2], PDFWriter.TEXT_OPTS, false)
 			.addText(this.total.toFixed(2), cols[3], PDFWriter.TEXT_OPTS);
 
-		writer.doc.setFont(undefined, 'normal').setFontSize(12);
+		writer.doc.setFont(undefined as unknown as string, 'normal').setFontSize(12);
 	}
 }

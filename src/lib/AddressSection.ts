@@ -4,20 +4,20 @@ import PDFWriter from './PDFWriter';
 export default class AddressSection implements PDFSection {
 	static ORDER = ['name', 'street', 'street2', 'city'] as const;
 
-	name: string;
-	street: string;
-	street2: string;
-	city: string;
+	name = '';
+	street = '';
+	street2 = '';
+	city = '';
 	storageKey?: string;
 
 	constructor(public title: string, public save = false) {
 		this.storageKey = this.save
 			? this.title.toLowerCase().replace(/ /g, '-')
-			: null;
+			: undefined;
 
 		AddressSection.ORDER.forEach((key) => {
 			if (!this.storageKey) this[key] = '';
-			this[key] = localStorage.getItem(`invoice-${this.storageKey}-${key}`);
+			this[key] = localStorage.getItem(`invoice-${this.storageKey}-${key}`) ?? '';
 		});
 	}
 
@@ -32,11 +32,11 @@ export default class AddressSection implements PDFSection {
 		);
 
 		if (entries.length) {
-			writer.doc.setFont(undefined, 'bold');
+			writer.doc.setFont(undefined as unknown as string, 'bold');
 
 			writer.addText(this.title, x, PDFWriter.TEXT_OPTS).moveY(3);
 
-			writer.doc.setFont(undefined, 'normal');
+			writer.doc.setFont(undefined as unknown as string, 'normal');
 		}
 
 		entries.forEach((str) => {
