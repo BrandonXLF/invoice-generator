@@ -77,7 +77,7 @@ export default class ItemTableSection implements PDFSection {
 			.addText(item.amount.toFixed(2), cols[3], PDFWriter.TEXT_OPTS, false)
 			.addText(item.desc, cols[0], {
 				...PDFWriter.TEXT_OPTS,
-				maxWidth: cols[1] - cols[0]
+				maxWidth: cols[1] - cols[0] - 3
 			})
 			.moveY(3);
 	}
