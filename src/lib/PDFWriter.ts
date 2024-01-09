@@ -72,21 +72,38 @@ export default class PDFWriter {
 		increaseY = true
 	): this {
 		const opts = { ...PDFWriter.TEXT_OPTS, ...options };
+		const maxWidth =
+			options?.maxWidth ??
+			(options?.align === 'right'
+				? x - PDFWriter.MARGIN
+				: this.doc.internal.pageSize.width - x - PDFWriter.MARGIN);
 
-		let height =
-			this.doc.getFontSize() * this.doc.getLineHeightFactor() * (254 / 720);
+		opts.maxWidth = maxWidth;
 
-		if (
-			this.currentY + height + PDFWriter.MARGIN >
-			this.doc.internal.pageSize.height
-		) {
-			this.doc.addPage();
-			this.currentY = PDFWriter.MARGIN;
+		const lines = text
+			.split('\n')
+			.flatMap((line) => this.doc.splitTextToSize(line, maxWidth));
+
+		const oldY = this.currentY;
+
+		lines.forEach((line) => {
+			const height = this.doc.getTextDimensions(line, opts).h;
+
+			if (
+				this.currentY + height + PDFWriter.MARGIN >
+				this.doc.internal.pageSize.height
+			) {
+				this.doc.addPage();
+				this.currentY = PDFWriter.MARGIN;
+			}
+
+			this.doc.text(line, x, this.currentY, opts);
+			this.currentY += height;
+		});
+
+		if (!increaseY) {
+			this.currentY = oldY;
 		}
-
-		this.doc.text(text, x, this.currentY, opts);
-
-		if (increaseY) this.currentY += height;
 
 		return this;
 	}

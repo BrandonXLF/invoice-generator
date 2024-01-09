@@ -50,9 +50,7 @@ export default class ItemTableSection implements PDFSection {
 		for (let i = 0; i < this.items.length - 1; i++)
 			this.addItemTo(writer, this.items[i], cols);
 
-		writer
-			.addLine(x, writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
-			.moveY(5);
+		writer.addLine(x, writer.doc.internal.pageSize.width - PDFWriter.MARGIN);
 
 		this.addTotalTo(writer, cols);
 	}
@@ -71,29 +69,22 @@ export default class ItemTableSection implements PDFSection {
 	}
 
 	private addItemTo(writer: PDFWriter, item: Item, cols: number[]) {
-		writer.addLine(
-			cols[0],
-			writer.doc.internal.pageSize.width - PDFWriter.MARGIN
-		);
-
 		writer
+			.addLine(cols[0], writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
 			.moveY(3)
-			.addText(item.desc, cols[0])
+			.addText(item.quantity.toString(), cols[1], PDFWriter.TEXT_OPTS, false)
+			.addText(item.rate.toFixed(2), cols[2], PDFWriter.TEXT_OPTS, false)
+			.addText(item.amount.toFixed(2), cols[3], PDFWriter.TEXT_OPTS, false)
 			.addText(item.desc, cols[0], {
 				...PDFWriter.TEXT_OPTS,
-				maxWidth: cols[1]
+				maxWidth: cols[1] - cols[0]
 			})
-			.addText(item.quantity.toString(), cols[1], PDFWriter.TEXT_OPTS)
-			.addText(item.rate.toFixed(2), cols[2], PDFWriter.TEXT_OPTS)
-			.addText(item.amount.toFixed(2), cols[3], PDFWriter.TEXT_OPTS);
-
-		const lineHeight =
-			writer.doc.getFontSize() * writer.doc.getLineHeightFactor() * (25.4 / 72);
-
-		return lineHeight * item.desc.split('\n').length + (10 - lineHeight);
+			.moveY(3);
 	}
 
 	private addTotalTo(writer: PDFWriter, cols: number[]) {
+		writer.moveY(5);
+
 		if (this.taxRate) {
 			writer
 				.moveY(3)
