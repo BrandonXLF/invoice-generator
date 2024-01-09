@@ -7,6 +7,8 @@ export default class InvoiceTitleSection implements PDFSection {
 
 		writer.addText('INVOICE', x, { ...PDFWriter.TEXT_OPTS, align: 'right' });
 
-		writer.doc.setFont(undefined as unknown as string, 'normal').setFontSize(12);
+		writer.doc
+			.setFont(undefined as unknown as string, 'normal')
+			.setFontSize(12);
 	}
 }

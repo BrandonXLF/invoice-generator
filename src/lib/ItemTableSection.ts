@@ -118,6 +118,8 @@ export default class ItemTableSection implements PDFSection {
 			.addText('Total', cols[2], PDFWriter.TEXT_OPTS, false)
 			.addText(this.total.toFixed(2), cols[3], PDFWriter.TEXT_OPTS);
 
-		writer.doc.setFont(undefined as unknown as string, 'normal').setFontSize(12);
+		writer.doc
+			.setFont(undefined as unknown as string, 'normal')
+			.setFontSize(12);
 	}
 }

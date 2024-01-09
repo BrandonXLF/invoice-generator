@@ -10,14 +10,18 @@ export default class AddressSection implements PDFSection {
 	city = '';
 	storageKey?: string;
 
-	constructor(public title: string, public save = false) {
+	constructor(
+		public title: string,
+		public save = false
+	) {
 		this.storageKey = this.save
 			? this.title.toLowerCase().replace(/ /g, '-')
 			: undefined;
 
 		AddressSection.ORDER.forEach((key) => {
 			if (!this.storageKey) this[key] = '';
-			this[key] = localStorage.getItem(`invoice-${this.storageKey}-${key}`) ?? '';
+			this[key] =
+				localStorage.getItem(`invoice-${this.storageKey}-${key}`) ?? '';
 		});
 	}
 
