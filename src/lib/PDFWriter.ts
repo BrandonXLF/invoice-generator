@@ -7,6 +7,7 @@ export default class PDFWriter {
 
 	currentY = PDFWriter.MARGIN;
 	rowMax = [0, 0];
+	textRowMax = [0, 0];
 	doc: jsPDF;
 
 	/**
@@ -71,36 +72,25 @@ export default class PDFWriter {
 		return this;
 	}
 
-	
 	/**
 	 * Add text to the document
 	 *
 	 * @param text - The text to add
 	 * @param x - The x position to add the text
 	 * @param options - Options for the text
-	 * @param increaseY - Weather to update the current y position when done
 	 * @returns `this` for chaining methods
 	 */
-	addText(
-		text: string,
-		x: number,
-		options?: TextOptionsLight,
-		increaseY = true
-	): this {
+	addText(text: string, x: number, options?: TextOptionsLight): this {
 		const opts = { ...PDFWriter.TEXT_OPTS, ...options };
-		const maxWidth =
-			options?.maxWidth ??
-			(options?.align === 'right'
-				? x - PDFWriter.MARGIN
-				: this.doc.internal.pageSize.width - x - PDFWriter.MARGIN);
 
-		opts.maxWidth = maxWidth;
+		opts.maxWidth ??=
+			options?.align === 'right'
+				? x - PDFWriter.MARGIN
+				: this.doc.internal.pageSize.width - x - PDFWriter.MARGIN;
 
 		const lines = text
 			.split('\n')
-			.flatMap((line) => this.doc.splitTextToSize(line, maxWidth));
-
-		const oldY = this.currentY;
+			.flatMap((line) => this.doc.splitTextToSize(line, opts.maxWidth!));
 
 		lines.forEach((line) => {
 			const height = this.doc.getTextDimensions(line, opts).h;
@@ -117,16 +107,59 @@ export default class PDFWriter {
 			this.currentY += height;
 		});
 
-		if (!increaseY) {
-			this.currentY = oldY;
+		return this;
+	}
+
+	/**
+	 * Add a text cell to the text row
+	 *
+	 * @param text - The text to add
+	 * @param x - The x position to add the text
+	 * @param options - Options for the text
+	 * @returns `this` for chaining methods
+	 */
+	addTextCell(text: string, x: number, options?: TextOptionsLight): this {
+		const originalInfo = [
+			this.doc.getCurrentPageInfo().pageNumber,
+			this.currentY
+		];
+
+		this.addText(text, x, options);
+
+		const newInfo = [this.doc.getCurrentPageInfo().pageNumber, this.currentY];
+
+		if (
+			newInfo[0] > this.textRowMax[0] ||
+			(newInfo[0] === this.textRowMax[0] && newInfo[1] > this.textRowMax[1])
+		) {
+			this.textRowMax = newInfo;
 		}
+
+		this.doc.setPage(originalInfo[0]);
+		this.currentY = originalInfo[1];
+
+		return this;
+	}
+
+	/**
+	 * Set the current y position to the largest item in the text row and create a new row
+	 *
+	 * @returns `this` for chaining methods
+	 */
+	finishTextRow(): this {
+		if (this.textRowMax[0] > 0) {
+			this.doc.setPage(this.textRowMax[0]);
+			this.currentY = this.textRowMax[1];
+		}
+
+		this.textRowMax = [0, 0];
 
 		return this;
 	}
 
 	/**
 	 * Add a horizontal line
-	 * 
+	 *
 	 * @param x1 - The start of the line
 	 * @param x2 - The end of the line
 	 * @returns `this` for chaining methods

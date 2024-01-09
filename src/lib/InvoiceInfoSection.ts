@@ -17,8 +17,9 @@ export default class InvoiceInfoSection implements PDFSection {
 			if (!this[key]) return;
 
 			writer
-				.addText(InvoiceInfoSection.labels[key], x, PDFWriter.TEXT_OPTS, false)
-				.addText(this[key], x + 30, PDFWriter.TEXT_OPTS)
+				.addTextCell(InvoiceInfoSection.labels[key], x, PDFWriter.TEXT_OPTS)
+				.addTextCell(this[key], x + 30, PDFWriter.TEXT_OPTS)
+				.finishTextRow()
 				.moveDown(3);
 		});
 	}

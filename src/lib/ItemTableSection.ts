@@ -59,10 +59,11 @@ export default class ItemTableSection implements PDFSection {
 		writer.doc.setFont(undefined as unknown as string, 'bold');
 
 		writer
-			.addText('Description', cols[0], PDFWriter.TEXT_OPTS, false)
-			.addText('Quantity', cols[1], PDFWriter.TEXT_OPTS, false)
-			.addText('Rate', cols[2], PDFWriter.TEXT_OPTS, false)
-			.addText('Amount', cols[3], PDFWriter.TEXT_OPTS)
+			.addTextCell('Description', cols[0], PDFWriter.TEXT_OPTS)
+			.addTextCell('Quantity', cols[1], PDFWriter.TEXT_OPTS)
+			.addTextCell('Rate', cols[2], PDFWriter.TEXT_OPTS)
+			.addTextCell('Amount', cols[3], PDFWriter.TEXT_OPTS)
+			.finishTextRow()
 			.moveDown(3);
 
 		writer.doc.setFont(undefined as unknown as string, 'normal');
@@ -72,13 +73,14 @@ export default class ItemTableSection implements PDFSection {
 		writer
 			.addLine(cols[0], writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
 			.moveDown(3)
-			.addText(item.quantity.toString(), cols[1], PDFWriter.TEXT_OPTS, false)
-			.addText(item.rate.toFixed(2), cols[2], PDFWriter.TEXT_OPTS, false)
-			.addText(item.amount.toFixed(2), cols[3], PDFWriter.TEXT_OPTS, false)
-			.addText(item.desc, cols[0], {
+			.addTextCell(item.desc, cols[0], {
 				...PDFWriter.TEXT_OPTS,
 				maxWidth: cols[1] - cols[0] - 3
 			})
+			.addTextCell(item.quantity.toString(), cols[1], PDFWriter.TEXT_OPTS)
+			.addTextCell(item.rate.toFixed(2), cols[2], PDFWriter.TEXT_OPTS)
+			.addTextCell(item.amount.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+			.finishTextRow()
 			.moveDown(3);
 	}
 
@@ -88,13 +90,15 @@ export default class ItemTableSection implements PDFSection {
 		if (this.taxRate) {
 			writer
 				.moveDown(3)
-				.addText('Sub-Total', cols[2], PDFWriter.TEXT_OPTS, false)
-				.addText(this.subTotal.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+				.addTextCell('Sub-Total', cols[2], PDFWriter.TEXT_OPTS)
+				.addTextCell(this.subTotal.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+				.finishTextRow()
 				.moveDown(3)
 				.addLine(cols[2], writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
 				.moveDown(3)
-				.addText(`Tax (${this.taxRate}%)`, cols[2], PDFWriter.TEXT_OPTS, false)
-				.addText(this.tax.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+				.addTextCell(`Tax (${this.taxRate}%)`, cols[2], PDFWriter.TEXT_OPTS)
+				.addTextCell(this.tax.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+				.finishTextRow()
 				.moveDown(3)
 				.addLine(
 					cols[2],
@@ -106,8 +110,9 @@ export default class ItemTableSection implements PDFSection {
 
 		writer
 			.moveDown(3)
-			.addText('Total', cols[2], PDFWriter.TEXT_OPTS, false)
-			.addText(this.total.toFixed(2), cols[3], PDFWriter.TEXT_OPTS);
+			.addTextCell('Total', cols[2], PDFWriter.TEXT_OPTS)
+			.addTextCell(this.total.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+			.finishTextRow();
 
 		writer.doc
 			.setFont(undefined as unknown as string, 'normal')
