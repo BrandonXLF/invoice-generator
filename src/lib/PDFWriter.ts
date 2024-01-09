@@ -54,6 +54,12 @@ export default class PDFWriter {
 		return this;
 	}
 
+	/**
+	 * Move the current y position down
+	 *
+	 * @param y - The amount to move it down by in mm
+	 * @returns `this` for chaining methods
+	 */
 	moveDown(y: number): this {
 		this.currentY += y;
 
@@ -65,6 +71,16 @@ export default class PDFWriter {
 		return this;
 	}
 
+	
+	/**
+	 * Add text to the document
+	 *
+	 * @param text - The text to add
+	 * @param x - The x position to add the text
+	 * @param options - Options for the text
+	 * @param increaseY - Weather to update the current y position when done
+	 * @returns `this` for chaining methods
+	 */
 	addText(
 		text: string,
 		x: number,
@@ -108,8 +124,15 @@ export default class PDFWriter {
 		return this;
 	}
 
-	addLine(x1: number, x2: number, style?: string): this {
-		this.doc.line(x1, this.currentY, x2, this.currentY, style);
+	/**
+	 * Add a horizontal line
+	 * 
+	 * @param x1 - The start of the line
+	 * @param x2 - The end of the line
+	 * @returns `this` for chaining methods
+	 */
+	addLine(x1: number, x2: number): this {
+		this.doc.line(x1, this.currentY, x2, this.currentY);
 		return this;
 	}
 
