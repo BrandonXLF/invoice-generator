@@ -1,4 +1,3 @@
-import type jsPDF from 'jspdf';
 import type PDFSection from './PDFSection';
 import PDFWriter from './PDFWriter';
 
@@ -13,24 +12,14 @@ export default class InvoiceInfoSection implements PDFSection {
 		due: 'Due Date'
 	};
 
-	addTo(doc: jsPDF, x: number, y: number) {
-		let height = 0;
-
+	addTo(writer: PDFWriter, x: number) {
 		(['number', 'date', 'due'] as const).forEach((key) => {
 			if (!this[key]) return;
 
-			doc
-				.text(
-					InvoiceInfoSection.labels[key],
-					x,
-					y + height,
-					PDFWriter.TEXT_OPTS
-				)
-				.text(this[key], x + 30, y + height, PDFWriter.TEXT_OPTS);
-
-			height += 8;
+			writer
+				.addText(InvoiceInfoSection.labels[key], x, PDFWriter.TEXT_OPTS, false)
+				.addText(this[key], x + 30, PDFWriter.TEXT_OPTS)
+				.moveY(3);
 		});
-
-		return height;
 	}
 }

@@ -22,15 +22,15 @@
 
 	function createPDF() {
 		return new PDFWriter(pageSize)
-			.addItem(fromAddress)
-			.addItem(invoiceTitle, 0, true)
+			.addSection(fromAddress)
+			.addSection(invoiceTitle, 0, true)
 			.finishRow()
-			.addItem(billAddress)
-			.addItem(invoiceInfo, 65, true)
+			.addSection(billAddress)
+			.addSection(invoiceInfo, 65, true)
 			.finishRow()
-			.addItem(items)
+			.addSection(items)
 			.finishRow()
-			.addItem(noteData)
+			.addSection(noteData)
 			.finishRow();
 	}
 </script>

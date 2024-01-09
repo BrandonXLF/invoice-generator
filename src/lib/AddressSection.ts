@@ -1,4 +1,3 @@
-import type jsPDF from 'jspdf';
 import type PDFSection from './PDFSection';
 import PDFWriter from './PDFWriter';
 
@@ -27,26 +26,21 @@ export default class AddressSection implements PDFSection {
 			localStorage.setItem(`invoice-${this.storageKey}-${key}`, this[key]);
 	}
 
-	addTo(doc: jsPDF, x: number, y: number) {
-		let height = 0;
+	addTo(writer: PDFWriter, x: number) {
 		const entries = AddressSection.ORDER.map((key) => this[key]).filter(
 			(str) => str
 		);
 
 		if (entries.length) {
-			doc
-				.setFont(undefined, 'bold')
-				.text(this.title, x, y, PDFWriter.TEXT_OPTS)
-				.setFont(undefined, 'normal');
+			writer.doc.setFont(undefined, 'bold');
 
-			height += 8;
+			writer.addText(this.title, x, PDFWriter.TEXT_OPTS).moveY(3);
+
+			writer.doc.setFont(undefined, 'normal');
 		}
 
 		entries.forEach((str) => {
-			doc.text(str, x, y + height, PDFWriter.TEXT_OPTS);
-			height += 8;
+			writer.addText(str, x, PDFWriter.TEXT_OPTS).moveY(3);
 		});
-
-		return height;
 	}
 }

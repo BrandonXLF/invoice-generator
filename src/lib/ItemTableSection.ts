@@ -1,4 +1,3 @@
-import type jsPDF from 'jspdf';
 import type PDFSection from './PDFSection';
 import Item from './Item';
 import PDFWriter from './PDFWriter';
@@ -38,82 +37,87 @@ export default class ItemTableSection implements PDFSection {
 		return this.subTotal + this.tax;
 	}
 
-	addTo(doc: jsPDF, x: number, y: number) {
+	addTo(writer: PDFWriter, x: number) {
 		const cols = [
 			x,
-			doc.internal.pageSize.width - PDFWriter.MARGIN - 90,
-			doc.internal.pageSize.width - PDFWriter.MARGIN - 60,
-			doc.internal.pageSize.width - PDFWriter.MARGIN - 30
+			writer.doc.internal.pageSize.width - PDFWriter.MARGIN - 90,
+			writer.doc.internal.pageSize.width - PDFWriter.MARGIN - 60,
+			writer.doc.internal.pageSize.width - PDFWriter.MARGIN - 30
 		];
 
-		let height = this.addHeaderTo(doc, cols, y);
+		this.addHeaderTo(writer, cols);
 
 		for (let i = 0; i < this.items.length - 1; i++)
-			height += this.addItemTo(doc, this.items[i], cols, y + height);
+			this.addItemTo(writer, this.items[i], cols);
 
-		this.addLineTo(doc, x, y + height);
+		writer
+			.addLine(x, writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
+			.moveY(5);
 
-		height += 5;
-		height += this.addTotalTo(doc, cols, y + height);
-
-		return height;
+		this.addTotalTo(writer, cols);
 	}
 
-	private addLineTo(doc: jsPDF, x: number, y: number) {
-		doc.line(x, y, doc.internal.pageSize.width - PDFWriter.MARGIN, y);
+	private addHeaderTo(writer: PDFWriter, cols: number[]) {
+		writer.doc.setFont(undefined, 'bold');
+
+		writer
+			.addText('Description', cols[0], PDFWriter.TEXT_OPTS, false)
+			.addText('Quantity', cols[1], PDFWriter.TEXT_OPTS, false)
+			.addText('Rate', cols[2], PDFWriter.TEXT_OPTS, false)
+			.addText('Amount', cols[3], PDFWriter.TEXT_OPTS)
+			.moveY(3);
+
+		writer.doc.setFont(undefined, 'normal');
 	}
 
-	private addHeaderTo(doc: jsPDF, cols: number[], y: number) {
-		doc
-			.setFont(undefined, 'bold')
-			.text('Description', cols[0], y + 3, PDFWriter.TEXT_OPTS)
-			.text('Quantity', cols[1], y + 3, PDFWriter.TEXT_OPTS)
-			.text('Rate', cols[2], y + 3, PDFWriter.TEXT_OPTS)
-			.text('Amount', cols[3], y + 3, PDFWriter.TEXT_OPTS)
-			.setFont(undefined, 'normal');
+	private addItemTo(writer: PDFWriter, item: Item, cols: number[]) {
+		writer.addLine(
+			cols[0],
+			writer.doc.internal.pageSize.width - PDFWriter.MARGIN
+		);
 
-		return 10;
-	}
-
-	private addItemTo(doc: jsPDF, item: Item, cols: number[], y: number) {
-		this.addLineTo(doc, cols[0], y);
-
-		doc
-			.text(item.desc, cols[0], y + 3, PDFWriter.TEXT_OPTS)
-			.text(item.quantity.toString(), cols[1], y + 3, PDFWriter.TEXT_OPTS)
-			.text(item.rate.toFixed(2), cols[2], y + 3, PDFWriter.TEXT_OPTS)
-			.text(item.amount.toFixed(2), cols[3], y + 3, PDFWriter.TEXT_OPTS);
+		writer
+			.moveY(3)
+			.addText(item.desc, cols[0])
+			.addText(item.desc, cols[0], {
+				...PDFWriter.TEXT_OPTS,
+				maxWidth: cols[1]
+			})
+			.addText(item.quantity.toString(), cols[1], PDFWriter.TEXT_OPTS)
+			.addText(item.rate.toFixed(2), cols[2], PDFWriter.TEXT_OPTS)
+			.addText(item.amount.toFixed(2), cols[3], PDFWriter.TEXT_OPTS);
 
 		const lineHeight =
-			doc.getFontSize() * doc.getLineHeightFactor() * (25.4 / 72);
+			writer.doc.getFontSize() * writer.doc.getLineHeightFactor() * (25.4 / 72);
 
 		return lineHeight * item.desc.split('\n').length + (10 - lineHeight);
 	}
 
-	private addTotalTo(doc: jsPDF, cols: number[], y: number) {
-		let height = 0;
-
+	private addTotalTo(writer: PDFWriter, cols: number[]) {
 		if (this.taxRate) {
-			height += 20;
-
-			this.addLineTo(doc, cols[2], y + 10);
-			this.addLineTo(doc, cols[2], y + 20);
-
-			doc
-				.text('Sub-Total', cols[2], y + 3, PDFWriter.TEXT_OPTS)
-				.text(this.subTotal.toFixed(2), cols[3], y + 3, PDFWriter.TEXT_OPTS)
-				.text(`Tax (${this.taxRate}%)`, cols[2], y + 13, PDFWriter.TEXT_OPTS)
-				.text(this.tax.toFixed(2), cols[3], y + 13, PDFWriter.TEXT_OPTS);
+			writer
+				.moveY(3)
+				.addText('Sub-Total', cols[2], PDFWriter.TEXT_OPTS, false)
+				.addText(this.subTotal.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+				.moveY(3)
+				.addLine(cols[2], writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
+				.moveY(3)
+				.addText(`Tax (${this.taxRate}%)`, cols[2], PDFWriter.TEXT_OPTS, false)
+				.addText(this.tax.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+				.moveY(3)
+				.addLine(
+					cols[2],
+					writer.doc.internal.pageSize.width - PDFWriter.MARGIN
+				);
 		}
 
-		doc
-			.setFont(undefined, 'bold')
-			.setFontSize(16)
-			.text('Total', cols[2], y + 3 + height, PDFWriter.TEXT_OPTS)
-			.text(this.total.toFixed(2), cols[3], y + 3 + height, PDFWriter.TEXT_OPTS)
-			.setFont(undefined, 'normal')
-			.setFontSize(12);
+		writer.doc.setFont(undefined, 'bold').setFontSize(16);
 
-		return height + 10;
+		writer
+			.moveY(3)
+			.addText('Total', cols[2], PDFWriter.TEXT_OPTS, false)
+			.addText(this.total.toFixed(2), cols[3], PDFWriter.TEXT_OPTS);
+
+		writer.doc.setFont(undefined, 'normal').setFontSize(12);
 	}
 }

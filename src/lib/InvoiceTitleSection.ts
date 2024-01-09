@@ -1,16 +1,12 @@
-import type jsPDF from 'jspdf';
 import type PDFSection from './PDFSection';
 import PDFWriter from './PDFWriter';
 
 export default class InvoiceTitleSection implements PDFSection {
-	addTo(doc: jsPDF, x: number, y: number) {
-		doc
-			.setFont(undefined, 'bold')
-			.setFontSize(28)
-			.text('INVOICE', x, y, { ...PDFWriter.TEXT_OPTS, align: 'right' })
-			.setFont(undefined, 'normal')
-			.setFontSize(12);
+	addTo(writer: PDFWriter, x: number) {
+		writer.doc.setFont(undefined, 'bold').setFontSize(28);
 
-		return 20;
+		writer.addText('INVOICE', x, { ...PDFWriter.TEXT_OPTS, align: 'right' });
+
+		writer.doc.setFont(undefined, 'normal').setFontSize(12);
 	}
 }
