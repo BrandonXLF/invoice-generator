@@ -38,13 +38,13 @@ export default class AddressSection implements PDFSection {
 		if (entries.length) {
 			writer.doc.setFont(undefined as unknown as string, 'bold');
 
-			writer.addText(this.title, x, PDFWriter.TEXT_OPTS).moveY(3);
+			writer.addText(this.title, x, PDFWriter.TEXT_OPTS).moveDown(3);
 
 			writer.doc.setFont(undefined as unknown as string, 'normal');
 		}
 
 		entries.forEach((str) => {
-			writer.addText(str, x, PDFWriter.TEXT_OPTS).moveY(3);
+			writer.addText(str, x, PDFWriter.TEXT_OPTS).moveDown(3);
 		});
 	}
 }

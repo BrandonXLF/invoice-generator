@@ -63,7 +63,7 @@ export default class ItemTableSection implements PDFSection {
 			.addText('Quantity', cols[1], PDFWriter.TEXT_OPTS, false)
 			.addText('Rate', cols[2], PDFWriter.TEXT_OPTS, false)
 			.addText('Amount', cols[3], PDFWriter.TEXT_OPTS)
-			.moveY(3);
+			.moveDown(3);
 
 		writer.doc.setFont(undefined as unknown as string, 'normal');
 	}
@@ -71,7 +71,7 @@ export default class ItemTableSection implements PDFSection {
 	private addItemTo(writer: PDFWriter, item: Item, cols: number[]) {
 		writer
 			.addLine(cols[0], writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
-			.moveY(3)
+			.moveDown(3)
 			.addText(item.quantity.toString(), cols[1], PDFWriter.TEXT_OPTS, false)
 			.addText(item.rate.toFixed(2), cols[2], PDFWriter.TEXT_OPTS, false)
 			.addText(item.amount.toFixed(2), cols[3], PDFWriter.TEXT_OPTS, false)
@@ -79,23 +79,23 @@ export default class ItemTableSection implements PDFSection {
 				...PDFWriter.TEXT_OPTS,
 				maxWidth: cols[1] - cols[0] - 3
 			})
-			.moveY(3);
+			.moveDown(3);
 	}
 
 	private addTotalTo(writer: PDFWriter, cols: number[]) {
-		writer.moveY(5);
+		writer.moveDown(5);
 
 		if (this.taxRate) {
 			writer
-				.moveY(3)
+				.moveDown(3)
 				.addText('Sub-Total', cols[2], PDFWriter.TEXT_OPTS, false)
 				.addText(this.subTotal.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
-				.moveY(3)
+				.moveDown(3)
 				.addLine(cols[2], writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
-				.moveY(3)
+				.moveDown(3)
 				.addText(`Tax (${this.taxRate}%)`, cols[2], PDFWriter.TEXT_OPTS, false)
 				.addText(this.tax.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
-				.moveY(3)
+				.moveDown(3)
 				.addLine(
 					cols[2],
 					writer.doc.internal.pageSize.width - PDFWriter.MARGIN
@@ -105,7 +105,7 @@ export default class ItemTableSection implements PDFSection {
 		writer.doc.setFont(undefined as unknown as string, 'bold').setFontSize(16);
 
 		writer
-			.moveY(3)
+			.moveDown(3)
 			.addText('Total', cols[2], PDFWriter.TEXT_OPTS, false)
 			.addText(this.total.toFixed(2), cols[3], PDFWriter.TEXT_OPTS);
 

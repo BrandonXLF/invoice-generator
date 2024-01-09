@@ -54,7 +54,7 @@ export default class PDFWriter {
 		return this;
 	}
 
-	moveY(y: number): this {
+	moveDown(y: number): this {
 		this.currentY += y;
 
 		if (this.currentY + PDFWriter.MARGIN > this.doc.internal.pageSize.height) {
@@ -124,7 +124,7 @@ export default class PDFWriter {
 			this.currentY = this.rowMax[1];
 		}
 
-		this.moveY(PDFWriter.MARGIN / 2);
+		this.moveDown(PDFWriter.MARGIN / 2);
 		this.rowMax = [0, 0];
 
 		return this;
