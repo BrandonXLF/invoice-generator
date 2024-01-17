@@ -20,7 +20,7 @@
 	let invoiceInfo = new InvoiceInfoSection();
 	let items = new ItemTableSection();
 	let noteData = new NoteSection();
-	let pageSize: PageSize = localStorage.getItem('invoice-page-size') as PageSize ?? 'legal';
+	let pageSize: PageSize = localStorage.getItem('invoice-page-size') as PageSize ?? 'letter';
 
 	function createPDF() {
 		return new PDFWriter(pageSize)
