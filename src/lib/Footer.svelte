@@ -8,6 +8,6 @@
 		width: 8.5in;
         max-width: 100%;
         margin: 1em auto 0;
-        color: #ddd;
+        color: #eee;
 	}
 </style>
