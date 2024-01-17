@@ -1,4 +1,12 @@
-const pageDimensions = {
+import type { PageSize } from './PageSize';
+
+const pageDimensions: Record<
+	PageSize,
+	{
+		width: string;
+		height: string;
+	}
+> = {
 	letter: {
 		width: '8.5in',
 		height: '11in'

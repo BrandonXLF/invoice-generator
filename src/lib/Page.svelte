@@ -12,6 +12,7 @@
 	import PDFWriter from './PDFWriter';
 	import InvoiceTitleSection from './InvoiceTitleSection';
 	import pageDimensions from './pageDimensions';
+	import type { PageSize } from './PageSize';
 
 	let invoiceTitle = new InvoiceTitleSection();
 	let fromAddress = new AddressSection('From', true);
@@ -19,7 +20,7 @@
 	let invoiceInfo = new InvoiceInfoSection();
 	let items = new ItemTableSection();
 	let noteData = new NoteSection();
-	let pageSize: keyof typeof pageDimensions = 'letter';
+	let pageSize: PageSize = localStorage.getItem('invoice-page-size') as PageSize ?? 'legal';
 
 	function createPDF() {
 		return new PDFWriter(pageSize)
@@ -36,6 +37,7 @@
 	}
 
 	$: dimensions = pageDimensions[pageSize];
+	$: localStorage.setItem('invoice-page-size', pageSize);
 </script>
 
 <main id="page" style="max-width: {dimensions.width}; min-height: min(90vh, {dimensions.height});">
