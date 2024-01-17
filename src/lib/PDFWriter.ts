@@ -3,16 +3,20 @@ import type PDFSection from './PDFSection';
 
 export type PDFWriterTextOptions = {
 	bold?: boolean;
-	title?: boolean;
+	fontSize?: number;
 } & TextOptionsLight;
 
 export default class PDFWriter {
 	static MARGIN = 25.4;
-	static TEXT_OPTS = { baseline: 'top' } as const;
 
-	currentY = PDFWriter.MARGIN;
-	rowMax = [0, 0];
-	textRowMax = [0, 0];
+	pageSize;
+
+	private static TEXT_OPTS = { baseline: 'top' } as const;
+	private static FONT_SIZE = 12;
+
+	private currentY = PDFWriter.MARGIN;
+	private rowMax = [0, 0];
+	private textRowMax = [0, 0];
 	private doc: jsPDF;
 
 	/**
@@ -22,7 +26,9 @@ export default class PDFWriter {
 	 */
 	constructor(pageSize: string) {
 		this.doc = new jsPDF('p', 'mm', pageSize);
-		this.doc.setFontSize(12);
+		this.pageSize = this.doc.internal.pageSize;
+
+		this.doc.setFontSize(PDFWriter.FONT_SIZE);
 	}
 
 	/**
@@ -85,7 +91,7 @@ export default class PDFWriter {
 	 * @param options - Options for the text
 	 * @returns `this` for chaining methods
 	 */
-	addText(text: string, x: number, options?: TextOptionsLight): this {
+	addText(text: string, x: number, options?: PDFWriterTextOptions): this {
 		const opts = { ...PDFWriter.TEXT_OPTS, ...options };
 
 		opts.maxWidth ??=
@@ -96,6 +102,14 @@ export default class PDFWriter {
 		const lines = text
 			.split('\n')
 			.flatMap((line) => this.doc.splitTextToSize(line, opts.maxWidth!));
+
+		if (opts.bold) {
+			this.doc.setFont(undefined as unknown as string, 'bold');
+		}
+
+		if (opts.fontSize !== undefined) {
+			this.doc.setFontSize(opts.fontSize);
+		}
 
 		lines.forEach((line) => {
 			const height = this.doc.getTextDimensions(line, opts).h;
@@ -112,6 +126,14 @@ export default class PDFWriter {
 			this.currentY += height;
 		});
 
+		if (opts.bold) {
+			this.doc.setFont(undefined as unknown as string, 'normal');
+		}
+
+		if (opts.fontSize !== undefined) {
+			this.doc.setFontSize(PDFWriter.FONT_SIZE);
+		}
+
 		return this;
 	}
 
@@ -123,7 +145,7 @@ export default class PDFWriter {
 	 * @param options - Options for the text
 	 * @returns `this` for chaining methods
 	 */
-	addTextCell(text: string, x: number, options?: TextOptionsLight): this {
+	addTextCell(text: string, x: number, options?: PDFWriterTextOptions): this {
 		const originalInfo = [
 			this.doc.getCurrentPageInfo().pageNumber,
 			this.currentY

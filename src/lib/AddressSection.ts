@@ -36,11 +36,7 @@ export default class AddressSection implements PDFSection {
 		);
 
 		if (entries.length) {
-			writer.doc.setFont(undefined as unknown as string, 'bold');
-
-			writer.addText(this.title, x).moveDown(3);
-
-			writer.doc.setFont(undefined as unknown as string, 'normal');
+			writer.addText(this.title, x, { bold: true }).moveDown(3);
 		}
 
 		entries.forEach((str) => {

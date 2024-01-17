@@ -40,9 +40,9 @@ export default class ItemTableSection implements PDFSection {
 	addTo(writer: PDFWriter, x: number) {
 		const cols = [
 			x,
-			writer.doc.internal.pageSize.width - PDFWriter.MARGIN - 90,
-			writer.doc.internal.pageSize.width - PDFWriter.MARGIN - 60,
-			writer.doc.internal.pageSize.width - PDFWriter.MARGIN - 30
+			writer.pageSize.width - PDFWriter.MARGIN - 90,
+			writer.pageSize.width - PDFWriter.MARGIN - 60,
+			writer.pageSize.width - PDFWriter.MARGIN - 30
 		];
 
 		this.addHeaderTo(writer, cols);
@@ -50,31 +50,26 @@ export default class ItemTableSection implements PDFSection {
 		for (let i = 0; i < this.items.length - 1; i++)
 			this.addItemTo(writer, this.items[i], cols);
 
-		writer.addLine(x, writer.doc.internal.pageSize.width - PDFWriter.MARGIN);
+		writer.addLine(x, writer.pageSize.width - PDFWriter.MARGIN);
 
 		this.addTotalTo(writer, cols);
 	}
 
 	private addHeaderTo(writer: PDFWriter, cols: number[]) {
-		writer.doc.setFont(undefined as unknown as string, 'bold');
-
 		writer
-			.addTextCell('Description', cols[0])
-			.addTextCell('Quantity', cols[1])
-			.addTextCell('Rate', cols[2])
-			.addTextCell('Amount', cols[3])
+			.addTextCell('Description', cols[0], { bold: true })
+			.addTextCell('Quantity', cols[1], { bold: true })
+			.addTextCell('Rate', cols[2], { bold: true })
+			.addTextCell('Amount', cols[3], { bold: true })
 			.finishTextRow()
 			.moveDown(3);
-
-		writer.doc.setFont(undefined as unknown as string, 'normal');
 	}
 
 	private addItemTo(writer: PDFWriter, item: Item, cols: number[]) {
 		writer
-			.addLine(cols[0], writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
+			.addLine(cols[0], writer.pageSize.width - PDFWriter.MARGIN)
 			.moveDown(3)
 			.addTextCell(item.desc, cols[0], {
-				...PDFWriter.TEXT_OPTS,
 				maxWidth: cols[1] - cols[0] - 3
 			})
 			.addTextCell(item.quantity.toString(), cols[1])
@@ -94,28 +89,19 @@ export default class ItemTableSection implements PDFSection {
 				.addTextCell(this.subTotal.toFixed(2), cols[3])
 				.finishTextRow()
 				.moveDown(3)
-				.addLine(cols[2], writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
+				.addLine(cols[2], writer.pageSize.width - PDFWriter.MARGIN)
 				.moveDown(3)
 				.addTextCell(`Tax (${this.taxRate}%)`, cols[2])
 				.addTextCell(this.tax.toFixed(2), cols[3])
 				.finishTextRow()
 				.moveDown(3)
-				.addLine(
-					cols[2],
-					writer.doc.internal.pageSize.width - PDFWriter.MARGIN
-				);
+				.addLine(cols[2], writer.pageSize.width - PDFWriter.MARGIN);
 		}
-
-		writer.doc.setFont(undefined as unknown as string, 'bold').setFontSize(16);
 
 		writer
 			.moveDown(3)
-			.addTextCell('Total', cols[2])
-			.addTextCell(this.total.toFixed(2), cols[3])
+			.addTextCell('Total', cols[2], { bold: true, fontSize: 16 })
+			.addTextCell(this.total.toFixed(2), cols[3], { bold: true, fontSize: 16 })
 			.finishTextRow();
-
-		writer.doc
-			.setFont(undefined as unknown as string, 'normal')
-			.setFontSize(12);
 	}
 }
