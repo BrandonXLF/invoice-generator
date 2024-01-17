@@ -9,7 +9,10 @@ export type PDFWriterTextOptions = {
 export default class PDFWriter {
 	static MARGIN = 25.4;
 
-	pageSize;
+	pageSize: {
+		width: number;
+		height: number;
+	};
 
 	private static TEXT_OPTS = { baseline: 'top' } as const;
 	private static FONT_SIZE = 12;
