@@ -41,7 +41,7 @@ export default class PDFWriter {
 	 */
 	addSection(section: PDFSection, x: number = 0, fromRight = false): this {
 		x = fromRight
-			? this.doc.internal.pageSize.width - x - PDFWriter.MARGIN
+			? this.pageSize.width - x - PDFWriter.MARGIN
 			: x + PDFWriter.MARGIN;
 
 		const originalInfo = [
@@ -75,7 +75,7 @@ export default class PDFWriter {
 	moveDown(y: number): this {
 		this.currentY += y;
 
-		if (this.currentY + PDFWriter.MARGIN > this.doc.internal.pageSize.height) {
+		if (this.currentY + PDFWriter.MARGIN > this.pageSize.height) {
 			this.doc.addPage();
 			this.currentY = PDFWriter.MARGIN;
 		}
@@ -97,7 +97,7 @@ export default class PDFWriter {
 		opts.maxWidth ??=
 			options?.align === 'right'
 				? x - PDFWriter.MARGIN
-				: this.doc.internal.pageSize.width - x - PDFWriter.MARGIN;
+				: this.pageSize.width - x - PDFWriter.MARGIN;
 
 		const lines = text
 			.split('\n')
@@ -114,10 +114,7 @@ export default class PDFWriter {
 		lines.forEach((line) => {
 			const height = this.doc.getTextDimensions(line, opts).h;
 
-			if (
-				this.currentY + height + PDFWriter.MARGIN >
-				this.doc.internal.pageSize.height
-			) {
+			if (this.currentY + height + PDFWriter.MARGIN > this.pageSize.height) {
 				this.doc.addPage();
 				this.currentY = PDFWriter.MARGIN;
 			}
