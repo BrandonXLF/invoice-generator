@@ -59,10 +59,10 @@ export default class ItemTableSection implements PDFSection {
 		writer.doc.setFont(undefined as unknown as string, 'bold');
 
 		writer
-			.addTextCell('Description', cols[0], PDFWriter.TEXT_OPTS)
-			.addTextCell('Quantity', cols[1], PDFWriter.TEXT_OPTS)
-			.addTextCell('Rate', cols[2], PDFWriter.TEXT_OPTS)
-			.addTextCell('Amount', cols[3], PDFWriter.TEXT_OPTS)
+			.addTextCell('Description', cols[0])
+			.addTextCell('Quantity', cols[1])
+			.addTextCell('Rate', cols[2])
+			.addTextCell('Amount', cols[3])
 			.finishTextRow()
 			.moveDown(3);
 
@@ -77,9 +77,9 @@ export default class ItemTableSection implements PDFSection {
 				...PDFWriter.TEXT_OPTS,
 				maxWidth: cols[1] - cols[0] - 3
 			})
-			.addTextCell(item.quantity.toString(), cols[1], PDFWriter.TEXT_OPTS)
-			.addTextCell(item.rate.toFixed(2), cols[2], PDFWriter.TEXT_OPTS)
-			.addTextCell(item.amount.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+			.addTextCell(item.quantity.toString(), cols[1])
+			.addTextCell(item.rate.toFixed(2), cols[2])
+			.addTextCell(item.amount.toFixed(2), cols[3])
 			.finishTextRow()
 			.moveDown(3);
 	}
@@ -90,14 +90,14 @@ export default class ItemTableSection implements PDFSection {
 		if (this.taxRate) {
 			writer
 				.moveDown(3)
-				.addTextCell('Sub-Total', cols[2], PDFWriter.TEXT_OPTS)
-				.addTextCell(this.subTotal.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+				.addTextCell('Sub-Total', cols[2])
+				.addTextCell(this.subTotal.toFixed(2), cols[3])
 				.finishTextRow()
 				.moveDown(3)
 				.addLine(cols[2], writer.doc.internal.pageSize.width - PDFWriter.MARGIN)
 				.moveDown(3)
-				.addTextCell(`Tax (${this.taxRate}%)`, cols[2], PDFWriter.TEXT_OPTS)
-				.addTextCell(this.tax.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+				.addTextCell(`Tax (${this.taxRate}%)`, cols[2])
+				.addTextCell(this.tax.toFixed(2), cols[3])
 				.finishTextRow()
 				.moveDown(3)
 				.addLine(
@@ -110,8 +110,8 @@ export default class ItemTableSection implements PDFSection {
 
 		writer
 			.moveDown(3)
-			.addTextCell('Total', cols[2], PDFWriter.TEXT_OPTS)
-			.addTextCell(this.total.toFixed(2), cols[3], PDFWriter.TEXT_OPTS)
+			.addTextCell('Total', cols[2])
+			.addTextCell(this.total.toFixed(2), cols[3])
 			.finishTextRow();
 
 		writer.doc

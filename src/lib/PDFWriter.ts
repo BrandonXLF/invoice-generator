@@ -1,6 +1,11 @@
 import jsPDF, { type TextOptionsLight } from 'jspdf';
 import type PDFSection from './PDFSection';
 
+export type PDFWriterTextOptions = {
+	bold?: boolean;
+	title?: boolean;
+} & TextOptionsLight;
+
 export default class PDFWriter {
 	static MARGIN = 25.4;
 	static TEXT_OPTS = { baseline: 'top' } as const;
@@ -8,7 +13,7 @@ export default class PDFWriter {
 	currentY = PDFWriter.MARGIN;
 	rowMax = [0, 0];
 	textRowMax = [0, 0];
-	doc: jsPDF;
+	private doc: jsPDF;
 
 	/**
 	 * Create a new PDFWriter

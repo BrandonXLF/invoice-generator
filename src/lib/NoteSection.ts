@@ -9,10 +9,10 @@ export default class NoteSection implements PDFSection {
 
 		writer.doc.setFont(undefined as unknown as string, 'bold');
 
-		writer.addText('Notes', x, PDFWriter.TEXT_OPTS);
+		writer.addText('Notes', x);
 
 		writer.doc.setFont(undefined as unknown as string, 'normal');
 
-		writer.moveDown(3).addText(this.note, x, PDFWriter.TEXT_OPTS);
+		writer.moveDown(3).addText(this.note, x);
 	}
 }
