@@ -66,6 +66,7 @@
 		width: 100%;
 		max-width: 8.5in;
 		min-height: min(100%, 11in);
+		color-scheme: light;
 		background: white;
 		color: black;
 		padding: 1in;

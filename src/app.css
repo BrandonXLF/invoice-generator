@@ -10,7 +10,9 @@ html {
 
 body {
 	font-family: sans-serif;
+	color-scheme: dark;
 	background: #222;
+	color: white;
 	margin: 0;
 }
 
@@ -22,6 +24,5 @@ body {
 	align-items: center;
 	justify-content: center;
 	padding: 1em;
-	color-scheme: light;
 	overflow: auto;
 }
