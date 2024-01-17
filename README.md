@@ -1,6 +1,6 @@
 # Invoice Generator
 
-Quick and free invoice generator created with Svelte. 
+Quick and free invoice generator created with Svelte.
 
 See the live version at <https://www.brandonfowler.me/invoice-generator/>.
 
