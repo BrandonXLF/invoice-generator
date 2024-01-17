@@ -11,6 +11,7 @@
 	import NoteSection from './NoteSection';
 	import PDFWriter from './PDFWriter';
 	import InvoiceTitleSection from './InvoiceTitleSection';
+	import pageDimensions from './pageDimensions';
 
 	let invoiceTitle = new InvoiceTitleSection();
 	let fromAddress = new AddressSection('From', true);
@@ -18,7 +19,7 @@
 	let invoiceInfo = new InvoiceInfoSection();
 	let items = new ItemTableSection();
 	let noteData = new NoteSection();
-	let pageSize = 'letter';
+	let pageSize: keyof typeof pageDimensions = 'letter';
 
 	function createPDF() {
 		return new PDFWriter(pageSize)
@@ -33,9 +34,11 @@
 			.addSection(noteData)
 			.finishRow();
 	}
+
+	$: dimensions = pageDimensions[pageSize];
 </script>
 
-<main id="page">
+<main id="page" style="max-width: {dimensions.width}; min-height: min(90vh, {dimensions.height});">
 	<div class="row flex-row">
 		<StreetAddress bind:address={fromAddress} />
 		<InvoiceTitle />
@@ -63,8 +66,6 @@
 
 <style>
 	#page {
-		max-width: 8.5in;
-		min-height: min(90vh, 11in);
 		color-scheme: light;
 		background: white;
 		color: black;
