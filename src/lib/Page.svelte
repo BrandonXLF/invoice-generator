@@ -64,7 +64,7 @@
 <style>
 	#page {
 		max-width: 8.5in;
-		min-height: min(100%, 11in);
+		min-height: min(90vh, 11in);
 		color-scheme: light;
 		background: white;
 		color: black;
