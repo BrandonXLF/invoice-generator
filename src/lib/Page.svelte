@@ -20,7 +20,7 @@
 	let invoiceInfo = new InvoiceInfoSection();
 	let items = new ItemTableSection();
 	let noteData = new NoteSection();
-	let pageSize: PageSize = localStorage.getItem('invoice-page-size') as PageSize ?? 'letter';
+	let pageSize: PageSize = globalThis.localStorage?.getItem('invoice-page-size') as PageSize ?? 'letter';
 
 	function createPDF() {
 		return new PDFWriter(pageSize)
@@ -37,7 +37,7 @@
 	}
 
 	$: dimensions = pageDimensions[pageSize];
-	$: localStorage.setItem('invoice-page-size', pageSize);
+	$: globalThis.localStorage?.setItem('invoice-page-size', pageSize);
 </script>
 
 <main id="page" style="max-width: {dimensions.width}; min-height: min(90vh, {dimensions.height});">

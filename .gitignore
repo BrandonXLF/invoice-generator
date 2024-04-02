@@ -13,6 +13,8 @@ dist-ssr
 *.local
 deploy.*
 .ht*
+.svelte-kit
+vite.config.ts.timestamp-*
 
 # Editor directories and files
 .vscode/*

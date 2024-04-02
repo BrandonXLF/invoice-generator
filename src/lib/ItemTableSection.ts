@@ -5,11 +5,11 @@ import PDFWriter from './PDFWriter';
 export default class ItemTableSection implements PDFSection {
 	items: Item[] = [];
 	taxRate: number = parseFloat(
-		localStorage.getItem('invoice-tax-rate') ?? '10'
+		globalThis.localStorage?.getItem('invoice-tax-rate') ?? '10'
 	);
 
 	taxRateChanged() {
-		localStorage.setItem('invoice-tax-rate', this.taxRate.toString());
+		globalThis.localStorage?.setItem('invoice-tax-rate', this.taxRate.toString());
 	}
 
 	addItem() {

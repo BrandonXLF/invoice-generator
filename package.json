@@ -7,10 +7,12 @@
 		"dev": "vite",
 		"build": "vite build",
 		"preview": "vite preview",
-		"check": "svelte-check --tsconfig ./tsconfig.json",
-		"clean": "prettier --write ."
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@sveltejs/adapter-static": "^3.0.1",
+		"@sveltejs/kit": "^2.5.5",
 		"@sveltejs/vite-plugin-svelte": "^3.0.1",
 		"@tsconfig/svelte": "^5.0.2",
 		"prettier": "^3.1.1",

@@ -21,13 +21,13 @@ export default class AddressSection implements PDFSection {
 		AddressSection.ORDER.forEach((key) => {
 			if (!this.storageKey) this[key] = '';
 			this[key] =
-				localStorage.getItem(`invoice-${this.storageKey}-${key}`) ?? '';
+				globalThis.localStorage?.getItem(`invoice-${this.storageKey}-${key}`) ?? '';
 		});
 	}
 
 	onChange(key: (typeof AddressSection.ORDER)[number]): void {
 		if (this.storageKey)
-			localStorage.setItem(`invoice-${this.storageKey}-${key}`, this[key]);
+			globalThis.localStorage?.setItem(`invoice-${this.storageKey}-${key}`, this[key]);
 	}
 
 	addTo(writer: PDFWriter, x: number) {
